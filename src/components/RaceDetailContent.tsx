@@ -48,8 +48,15 @@ export function RaceDetailContent({ meet, date, rcNo }: RaceDetailContentProps) 
                 >
                   {data.grade}
                 </span>
-                <span>{data.entries.length}두 출전</span>
+                <span>{data.entry_count}두 출전</span>
               </div>
+              {(data.track || data.weather) && (
+                <div className="flex items-center gap-2 mt-1 text-xs text-gray-400">
+                  {data.track && <span>{data.track}</span>}
+                  {data.weather && <span>{data.weather}</span>}
+                  {data.budam && <span>{data.budam}</span>}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -76,7 +83,7 @@ export function RaceDetailContent({ meet, date, rcNo }: RaceDetailContentProps) 
           데이터를 불러올 수 없습니다.
         </div>
       ) : data ? (
-        <RaceCard entries={data.entries} distance={data.distance} />
+        <RaceCard entries={data.entries} />
       ) : null}
     </div>
   );

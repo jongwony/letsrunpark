@@ -6,12 +6,17 @@ export const MEETS: { code: MeetCode; name: string }[] = [
 ];
 
 export const GRADE_COLORS: Record<string, string> = {
-  "국1": "text-red-600 bg-red-50",
-  "국2": "text-orange-600 bg-orange-50",
-  "국3": "text-yellow-600 bg-yellow-50",
-  "국4": "text-green-600 bg-green-50",
-  "국5": "text-blue-600 bg-blue-50",
-  "국6": "text-gray-600 bg-gray-50",
+  // Full grade names from API (e.g., "국6등급", "혼4등급", "2등급")
+  "1등급": "text-red-700 bg-red-50",
+  "2등급": "text-red-600 bg-red-50",
+  "국3등급": "text-orange-600 bg-orange-50",
+  "혼3등급": "text-orange-600 bg-orange-50",
+  "국4등급": "text-yellow-600 bg-yellow-50",
+  "혼4등급": "text-yellow-600 bg-yellow-50",
+  "국5등급": "text-green-600 bg-green-50",
+  "혼5등급": "text-green-600 bg-green-50",
+  "국6등급": "text-blue-600 bg-blue-50",
+  "혼6등급": "text-blue-600 bg-blue-50",
 };
 
 export const BET_TYPE_LABELS: Record<string, string> = {

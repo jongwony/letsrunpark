@@ -1,11 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { formatPrize } from "@/lib/utils";
+import { cn, formatPrize } from "@/lib/utils";
 import { GRADE_COLORS } from "@/lib/constants";
 import type { RaceSummary, MeetCode } from "@/lib/types";
-import { Clock, Users } from "lucide-react";
+import { Users } from "lucide-react";
 
 interface RaceScheduleProps {
   races: RaceSummary[];
@@ -43,21 +42,30 @@ export function RaceSchedule({ races, meet, date }: RaceScheduleProps) {
                 <div className="font-semibold text-gray-900">{race.rc_name}</div>
                 <div className="flex items-center gap-2 mt-1 text-sm text-gray-500">
                   <span>{race.distance}m</span>
-                  <span className={cn("px-2 py-0.5 rounded-full text-xs font-medium", GRADE_COLORS[race.grade] || "text-gray-600 bg-gray-50")}>
+                  <span
+                    className={cn(
+                      "px-2 py-0.5 rounded-full text-xs font-medium",
+                      GRADE_COLORS[race.grade] || "text-gray-600 bg-gray-50"
+                    )}
+                  >
                     {race.grade}
                   </span>
+                  {race.budam && (
+                    <span className="text-xs text-gray-400">{race.budam}</span>
+                  )}
                 </div>
               </div>
             </div>
             <div className="text-right">
               <div className="flex items-center gap-1 text-sm text-gray-500">
-                <Clock className="w-3.5 h-3.5" />
-                <span>{race.post_time}</span>
-              </div>
-              <div className="flex items-center gap-1 mt-1 text-sm text-gray-500">
                 <Users className="w-3.5 h-3.5" />
                 <span>{race.entry_count}두</span>
               </div>
+              {race.weather && (
+                <div className="mt-1 text-xs text-gray-400">
+                  {race.weather}
+                </div>
+              )}
             </div>
           </div>
           <div className="mt-2 text-sm text-gray-400">
