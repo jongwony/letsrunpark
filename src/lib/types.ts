@@ -19,6 +19,10 @@ export interface RaceSummary {
   budam: string;
   track: string;
   weather: string;
+  // Pre-race fields (API26_2)
+  start_time?: string;  // "10:35"
+  age_cond?: string;
+  sex_cond?: string;
 }
 
 // Race Card
@@ -34,6 +38,8 @@ export interface RaceCardResponse {
   weather: string;
   entry_count: number;
   entries: HorseEntry[];
+  // Pre-race fields (API26_2)
+  start_time?: string;
 }
 
 export interface HorseEntry {
@@ -47,6 +53,12 @@ export interface HorseEntry {
   sex: string;
   rating: number;
   owner: string;
+  // Pre-race fields (API26_2)
+  hr_name_en?: string;
+  prd?: string;
+  ilsu?: number;
+  career?: { total: number; wins: number; seconds: number; thirds: number };
+  earnings?: { total: number; yearly: number; half_year: number };
 }
 
 // Results
@@ -65,9 +77,9 @@ export interface RaceResultEntry {
   jockey_name: string;
   trainer_name: string;
   finish_time: number;
-  margin: string;
-  win_odds: number;
-  plc_odds: number;
+  margin?: string;
+  win_odds?: number;
+  plc_odds?: number;
 }
 
 // Scores (Phase 3+)
