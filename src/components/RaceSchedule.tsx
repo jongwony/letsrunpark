@@ -28,8 +28,8 @@ export function RaceSchedule({ races, meet, date }: RaceScheduleProps) {
           key={race.rc_no}
           href={`/race/${meet}/${date}/${race.rc_no}`}
           className={cn(
-            "block p-4 rounded-2xl border border-gray-100 bg-white",
-            "hover:border-gray-300 hover:shadow-md transition-all",
+            "block p-4 rounded-2xl bg-white shadow-sm",
+            "hover:shadow-md transition-all",
             "active:scale-[0.98]"
           )}
         >
@@ -61,6 +61,11 @@ export function RaceSchedule({ races, meet, date }: RaceScheduleProps) {
                 <Users className="w-3.5 h-3.5" />
                 <span>{race.entry_count}두</span>
               </div>
+              {race.start_time && (
+                <div className="mt-1 text-xs text-gray-400">
+                  {race.start_time} 발주
+                </div>
+              )}
               {race.weather && (
                 <div className="mt-1 text-xs text-gray-400">
                   {race.weather}

@@ -1,13 +1,23 @@
 "use client";
 
+import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { RaceCard } from "@/components/RaceCard";
+import { RaceResults } from "@/components/RaceResults";
 import { RaceCardSkeleton } from "@/components/Skeleton";
 import { useRaceCard } from "@/lib/hooks/useRaceCard";
 import { formatRaceDate, MEET_NAMES, cn } from "@/lib/utils";
 import { GRADE_COLORS } from "@/lib/constants";
 import type { MeetCode } from "@/lib/types";
+
+type TabId = "entries" | "scores" | "results";
+
+const TABS: { id: TabId; label: string }[] = [
+  { id: "entries", label: "출전표" },
+  { id: "scores", label: "추천" },
+  { id: "results", label: "결과" },
+];
 
 interface RaceDetailContentProps {
   meet: MeetCode;
@@ -16,6 +26,7 @@ interface RaceDetailContentProps {
 }
 
 export function RaceDetailContent({ meet, date, rcNo }: RaceDetailContentProps) {
+  const [activeTab, setActiveTab] = useState<TabId>("entries");
   const { data, isLoading, error } = useRaceCard(meet, date, rcNo);
 
   return (
@@ -49,6 +60,9 @@ export function RaceDetailContent({ meet, date, rcNo }: RaceDetailContentProps) 
                   {data.grade}
                 </span>
                 <span>{data.entry_count}두 출전</span>
+                {data.start_time && (
+                  <span className="text-gray-400">발주 {data.start_time}</span>
+                )}
               </div>
               {(data.track || data.weather) && (
                 <div className="flex items-center gap-2 mt-1 text-xs text-gray-400">
@@ -62,29 +76,49 @@ export function RaceDetailContent({ meet, date, rcNo }: RaceDetailContentProps) 
         </div>
       )}
 
-      {/* Tab placeholder (Phase 4: 출전표 / 추천 / 결과) */}
-      <div className="flex gap-1 p-1 bg-gray-100 rounded-xl">
-        <button className="flex-1 py-2 text-sm font-semibold rounded-lg bg-white shadow-sm">
-          출전표
-        </button>
-        <button className="flex-1 py-2 text-sm text-gray-500 rounded-lg hover:bg-gray-50">
-          추천
-        </button>
-        <button className="flex-1 py-2 text-sm text-gray-500 rounded-lg hover:bg-gray-50">
-          결과
-        </button>
+      {/* Tabs */}
+      <div className="flex gap-1 p-1 bg-stone-100 rounded-xl">
+        {TABS.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={cn(
+              "flex-1 py-2 text-sm rounded-lg",
+              activeTab === tab.id
+                ? "bg-white shadow-sm font-semibold"
+                : "text-gray-500 hover:bg-stone-50"
+            )}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
 
-      {/* Race card */}
-      {isLoading ? (
-        <RaceCardSkeleton />
-      ) : error ? (
-        <div className="text-center py-12 text-red-500">
-          데이터를 불러올 수 없습니다.
+      {/* Tab content */}
+      {activeTab === "entries" && (
+        <>
+          {isLoading ? (
+            <RaceCardSkeleton />
+          ) : error ? (
+            <div className="text-center py-12 text-red-500">
+              데이터를 불러올 수 없습니다.
+            </div>
+          ) : data ? (
+            <RaceCard entries={data.entries} />
+          ) : null}
+        </>
+      )}
+
+      {activeTab === "scores" && (
+        <div className="text-center py-16 text-gray-400">
+          <div className="text-lg font-medium mb-2">추천 준비 중</div>
+          <div className="text-sm">통계 기반 유력마 추천 기능이 곧 제공됩니다.</div>
         </div>
-      ) : data ? (
-        <RaceCard entries={data.entries} />
-      ) : null}
+      )}
+
+      {activeTab === "results" && (
+        <RaceResults meet={meet} date={date} rcNo={rcNo} />
+      )}
     </div>
   );
 }
