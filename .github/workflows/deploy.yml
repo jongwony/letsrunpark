@@ -26,6 +26,7 @@ jobs:
       - run: bun run build
         env:
           NEXT_PUBLIC_API_URL: ${{ vars.NEXT_PUBLIC_API_URL }}
+      - run: cp out/index.html out/404.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: out
